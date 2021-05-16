@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% block content %}
+<style>
+    #create_assessment:hover~.describetext{
+        visibility: visible;
+    }
+    .describetext {
+        visibility: hidden;
+        width: fit-content;
+        background-color: lightblue;
+        color: black;
+        text-align: center;
+        border-radius: 6px;
+        border: 0.7px solid black;
+        padding: 0.3em;
+       
+        font-size: 12px;
+        position: absolute;
+    }
+
+    .describetext:hover {
+        visibility: visible;
+    }
+</style>
+
+<button id="create_assessment">Create Assessment</button>
+<span class="describetext">
+    <a href="{{ url_for('summative_assessment') }}">Summative Assessment</a>
+    <br><a href="{{ url_for('formative_assessment') }}">Formative Assessment</a>
+</span>
+
+<table>
+    <tr>
+        <td>
+            <span>Assessment Title</span>
+        </td>
+
+        <td>
+            <span>Module ID</span>
+        </td>
+
+        <td>
+            <span>Passing/Maximum Mark</span>
+        </td>
+
+        <td>
+            <span>Set Date</span>
+        </td>
+
+        <td>
+            <span>Assessment Type</span>
+        </td>
+    </tr>
+    {% for assessment in staff %}
+    <tr>
+        <td>
+            <span>{{assessment.title }}</span>
+        </td>
+
+        <td>
+            <span>{{assessment.module_id }}</span>
+        </td>
+
+        <td>
+            <span>Pass Mark: {{assessment.passing_mark }} Maximum Mark: {{ assessment.max_marks }} </span>
+
+        </td>
+
+        <td>
+            <span>{{assessment.set_date }}</span>
+        </td>
+            
+        <td>
+            <span>
+            {% if assessment.type == "formative" %}
+            Formative
+            {% else %}
+            Summative
+            {% endif %}
+            </span>
+        </td>
+
+        <td>
+            <a href="/delete-assessment/{{ assessment.id }}">Delete</a>
+            <a href="/manage-questions/{{ assessment.id }}">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'layout.html'%}
+{% block content %}
+<form action="/editMCQ/{{edit_question.id}}" method="POST" id="MCQ-form">
+    {{ form.csrf_token() }}
+
+    <p>Question: <input type="text" placeholder="{{ edit_question.question_text }}" name="question_text" value="{{ edit_question.question_text }}" label="Question Text"></p><br>
+
+    <p>Hint: <input type="text" placeholder="{{ edit_question.hint }}" name="hint" value="{{ edit_question.hint }}" label="Hint"></p><br>
+    <p>Category: <input type="text" placeholder="{{ edit_question.category }}" name="category" value="{{ edit_question.category }}" label="Category"></p><br>
+    {% set x = [1] %}
+        {% for data in load_data %}
+            <p>Answer {{ x|length }} <input type="text" placeholder="{{ data.value }}" name="Answer{{ x|length }}" value="{{ data.value }}" label="Answer{{ x|length }}"></p><br>
+        {% set y = x.append(1) %}
+        {% endfor %}
+    
+
+    <p>Correct Answer <input type="text" placeholder="{{ load_correct_answer.correct_answer_id }}" name="correct_answer" value="{{ load_correct_answer.correct_answer_id }}" label="Correct Answer"></p>
+    <p><input type="submit" value="Update Question"></p>
+</form>
+{% endblock %}

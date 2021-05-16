@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<form action="" method="POST" id="formative-form">
+    {{ form_1.csrf_token() }}
+    <p>
+    {{ form_1.title.label }}<br>
+    {{ form_1.title }}
+</p>
+<p>
+    {{ form_1.module_id.label }}<br>
+    {{ form_1.module_id }}
+</p>
+<p>
+    {{ form_1.set_date.label }}<br>
+    {{ form_1.set_date }}
+</p>
+<p>
+    {{ form_1.max_marks.label }}<br>
+    {{ form_1.max_marks }}
+</p>
+    <p>
+    {{ form_1.passing_mark.label }}<br>
+    {{ form_1.passing_mark }}
+</p>
+<p>
+    {{ form_1.submit() }}
+
+</p>
+</form>
+
+{% with i = formatives %}
+<p>{{i.id}}</p>
+{% endwith %}
+
+
+{% endblock %}

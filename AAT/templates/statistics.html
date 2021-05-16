@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Statistics{% endblock %}
+{% block header %}
+  {% if current_user.type == "staff" %}
+    Statistics
+  {% else %}
+    {{ current_user.first_name }}'s Statistics
+  {% endif %}
+{% endblock %}
+{% block content %}
+{% if current_user.type == "staff" %}
+    {% include "statistics/_staff-stats-menu.html" %}
+  {% else %}
+    {% with student=current_user %}
+      {% with display_full=True %}
+        {% include "statistics/_student-stats.html" %}
+      {% endwith %}
+    {% endwith %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'layout.html'%}
+{% block content %}
+<script>
+    window.onload = function(){
+    let qt = JSON.parse('{{ question_text | tojson }}');
+    let box = document.getElementById("question_text");
+    box.innerHTML = qt
+    };
+</script>
+
+<form action="" method="POST" id="FTBQ-form">
+    {{ form.csrf_token() }}
+    <p>
+        {{ form.question_text.label }}<br>
+        {{ form.question_text() }}
+    </p>
+    <p>
+        {{ form.hint.label }}<br>
+        {{ form.hint(value= q.hint) }}
+    </p>
+    <p>
+        {{ form.category.label }}<br>
+        {{ form.category(value=q.category) }}
+    </p>
+    <p>Fill in these fields with index of the words you want to be answers (first word = 1)</p>
+    <p>
+        {{ form.answer_1.label }}<br>
+        {{ form.answer_1(value=answers_list[0])}}
+    </p>
+    <p>
+        {{ form.answer_2.label }}<br>
+        {{ form.answer_2(value=answers_list[1]) }}
+    </p>
+    <p>
+        {{ form.answer_3.label }}<br>
+        {{ form.answer_3(value=answers_list[2]) }}
+    </p>
+    <p>
+        {{ form.answer_4.label }}<br>
+        {{ form.answer_4(value=answers_list[3]) }}
+    </p>
+    <p>
+        {{ form.answer_5.label }}<br>
+        {{ form.answer_5(value=answers_list[4]) }}
+    </p>
+    <p>
+        {{ form.answer_6.label }}<br>
+        {{ form.answer_6(value=answers_list[5]) }}
+    </p>
+    <p>
+        {{ form.answer_7.label }}<br>
+        {{ form.answer_7(value=answers_list[6]) }}
+    </p>
+    <p>
+        {{ form.answer_8.label}}<br>
+        {{ form.answer_8(value=answers_list[7]) }}
+    </p>
+
+    <p>
+        {{ form.submit() }}
+    </p>
+{% endblock %}

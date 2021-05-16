@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %} Home {% endblock %}
+{% block header %}Home{% endblock %}
+
+{% block content %}
+{% if current_user.is_anonymous %}
+  Please <a href="{{ url_for('login')}}">log in</a> to continue.
+{% else %}
+  <h2>Main Menu</h2>
+  {% if current_user.type == "staff" %}
+      {% include "main_menu/_staff_main_menu.html" %}
+  {% else %}
+      {% include "main_menu/_student_main_menu.html" %}
+  {% endif %}
+{% endif %}
+{% endblock %}

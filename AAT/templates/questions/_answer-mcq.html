@@ -1,0 +1,20 @@
+<form action="{{ url_for('submit_mcq_attempt_answer', attempt_id=attempt.id, qav_id=qav.id) }}" method="POST" target="frame" class="answer-mcq-question">
+    {{ form.csrf_token() }}
+    <fieldset class="radio-options">
+      <legend>{{ qav.question.question_text }}</legend>
+      {% for answer in qav.question.options %}
+        <div class="radio-option">
+          <input type="radio" name="answer" value="{{ answer.id }}" id="{{ answer.id }}" required>
+          <label for="{{ answer.id }}">{{ answer.value }}</label>
+        </div>
+      {% endfor %}
+      {% if qav.question.hint %}
+        <div class="question-hint">
+          <button type="button" class="hint-btn">Show hint</button>
+          <small class="hint-text hidden">{{ qav.question.hint }}</small>
+        </div>
+      {% endif %}
+      <h4>({{ qav.marks_value }} mark{{ '' if qav.marks_value == 1 else 's' }})</h4>
+    </fieldset>
+    <input class="button-link" type="submit" value="Submit Answer">
+</form>

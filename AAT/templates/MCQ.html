@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="" method="POST" id="MCQ-form">
+    {{ form.csrf_token() }}
+    <p>
+    {{ form.question_text.label }}<br>
+    {{ form.question_text }}
+</p>
+<p>
+    {{ form.hint.label }}<br>
+    {{ form.hint }}
+</p>
+<p>
+    {{ form.category.label }}<br>
+    {{ form.category }}
+</p>
+    <p>
+    {{ form.answer_1.label }}<br>
+    {{form.answer_1 }}
+</p>
+<p>
+    {{ form.answer_2.label }}<br>
+    {{ form.answer_2 }}
+</p>
+    <p>
+    {{ form.answer_3.label }}<br>
+    {{ form.answer_3 }}
+    </p>
+    <p>
+    {{ form.answer_4.label }}<br>
+    {{ form.answer_4 }}
+</p>
+<p>
+    {{ form.correct_answer_id.label }}<br>
+    {{ form.correct_answer_id }}
+</p>
+<p>
+    {{ form.submit() }}
+
+</p>
+</form>
+{% endblock %}

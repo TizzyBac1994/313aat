@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %} Register {% endblock %}
+{% block header %}User registration{% endblock %}
+
+{% block content %}
+<h2>Choose a user type:</h2>
+<ul class="register-menu">
+  <li>
+    <a href="{{ url_for('student_register') }}">Student</a>
+  </li>
+  <li>
+    <a href="{{ url_for('staff_register') }}">Staff</a>
+  </li>
+</ul>
+{% endblock %}

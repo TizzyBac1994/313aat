@@ -1,0 +1,40 @@
+<nav class="main-nav">
+  <ul>
+    <li>
+      <a href="{{ url_for('home') }}">Home</a>
+    </li>
+  {% if current_user.is_anonymous %}
+    <li>
+      <a href="{{ url_for('login') }}">Login</a>
+    </li>
+  {% else %}
+    {% if current_user.type == "staff" %} {# Staff menu #}
+    <li>
+      <a href="{{ url_for('assessment_statistics') }}">Assessments</a>
+    </li>
+    <li>
+      <a href="#">Questions</a>
+    </li>
+    <li>
+      <a href="#">Feedback</a>
+    </li>
+    <li>
+      <a href="{{ url_for('statistics') }}">Statistics</a>
+    </li>
+    {% else %} {# Student menu #}
+    <li>
+      <a href="{{ url_for('assessments') }}">Assessments</a>
+    </li>
+    <li>
+      <a href="{{ url_for('statistics') }}">Statistics</a>
+    </li>
+    <li>
+      <a href="{{ url_for('student_feedback') }}">Feedback</a>
+    </li>
+    {% endif %}
+    <li>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </li>
+  {% endif %}
+  </ul>
+</nav>

@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Assessment Statistics{% endblock %}
+{% block header %}
+  Assessment Statistics
+{% endblock %}
+{% block content %}
+<h2>Modules taught by {{ current_user.first_name }} {{ current_user.last_name }} ({{ current_user.email }})</h2>
+<div class="assessment-statistics">
+  {% for module in current_user.modules_taught %}
+    <div class="statistics-container">
+      <h2 class="statistics-subhead">{{ module.name }}</h2>
+      <div class="statistics-module-percentage">Average percentage for whole module: {{ module.average_percentage(rounded=True) }}%</div>
+      {% for assessment in module.assessments %}
+        <div class="assessment-index-item">
+          <h3>{{ assessment.type[0].upper() + assessment.type[1:] }} #{{ assessment.id }}: {{ assessment.title }}</h3>
+          <a href="#" class="button-link">Edit Assessment</a>
+          <ul>
+            <li>Average percentage: <strong>{{ assessment.average_percentage(rounded=True) }}%</strong></li>
+            <li>Number of submissions: <strong>{{ assessment.attempts|length }}</strong></li>
+            <li>Number of eligible students: <strong>{{ assessment.students()|length }}</strong></li>
+            <li>Number of students yet to submit: <strong>{{ assessment.students(not_yet_submitted=True)|length }}</strong> </li>
+            <li>Average student feedback rating: <strong>{{ assessment.average_feedback_rating(rounded=True) }} / 5</strong></li>
+            {% if assessment.students(not_yet_submitted=True)|length is not equalto 0  %}
+              <li>
+                <h4>Students yet to submit:</h4>
+                <ul>
+                  {% for student in assessment.students(not_yet_submitted=True) %}
+                    <li>
+                      <a href="{{ url_for('individual_student_statistics', student_number=student.student_number) }}">{{student.student_number}} - {{ student.first_name }} {{ student.last_name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+          </ul>
+          {% if assessment.attempts|length is not equalto 0 %}
+            <div class="submissions-container">
+              <h4>Submissions</h4>
+              <button class="show-submissions-btn">Show submissions</button>
+              <ul class="submissions-list hidden">
+                {% for attempt in assessment.attempts %}
+                  {% with show_name=True %}
+                    {% include "assessments/_attempts_index_item.html" %}
+                  {% endwith %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

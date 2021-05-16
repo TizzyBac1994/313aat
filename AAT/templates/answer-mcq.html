@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block content %}
+<style>
+        p {
+                text-align: center;
+        }
+        .submitted {
+                display:grid;
+                grid-column: 1;
+                grid-row: 1;
+                grid-column-gap: 1em;
+        }
+        #previous {
+                grid-row: 1;
+                grid-column: 1;
+
+        }
+        #next {
+                grid-row: 1;
+                grid-column: 2;
+
+        }
+</style>
+<p>{{ load_question.question_text }}</p>
+{% if load_question.hint == None %}
+<p>There is no hint available for this question.</p>
+{% else %}
+<p>Hint: {{ load_question.hint }}</p>
+{% endif %}
+
+<form action="" method="POST">
+    {{ form.csrf_token() }}
+
+    {% set x = [1] %}
+    {% for answer in load_answers %}
+        <p>{{ x|length }}) {{ answer.value }} <input type="radio" name="answer" value="{{ answer.id }}" label="{{ answer.id }}"></p><br>
+        {% set y = x.append(1) %}
+    {% endfor %}
+                <p><input class="button-link" type="submit" value="Submit Answer"></p>
+        <div class="submitted"> 
+                <input id="next" class="button-link" value="Next"> <input id="previous" class="button-link" value="Previous">
+        </div>
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}Student Statistics{% endblock %}
+{% block header %}
+  Student Statistics
+{% endblock %}
+{% block content %}
+<div class="assessment-statistics">
+  {% for student in students %}
+    <div class="statistics-container">
+      <h2 class="statistics-subhead">
+        <a href="{{ url_for('individual_student_statistics', student_number=student.student_number) }}">{{student.student_number}} - {{ student.first_name }} {{ student.last_name }}</a>
+      </h2>
+      {% with display_full=False %}
+        {% include "statistics/_student-stats.html" %}
+      {% endwith %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

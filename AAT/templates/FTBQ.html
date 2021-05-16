@@ -1,0 +1,55 @@
+{% extends 'layout.html'%}
+{% block content %}
+
+
+<form action="" method="POST" id="FTBQ-form">
+    {{ form.csrf_token() }}
+    <p>
+        {{ form.question_text.label }}<br>
+        {{ form.question_text }}
+    </p>
+    <p>
+        {{ form.hint.label }}<br>
+        {{ form.hint }}
+    </p>
+    <p>
+        {{ form.category.label }}<br>
+        {{ form.category }}
+    </p>
+    <p>Fill in these fields with index of the words you want to be answers (first word = 1)</p>
+    <p>
+        {{ form.answer_1.label }}<br>
+        {{ form.answer_1}}
+    </p>
+    <p>
+        {{ form.answer_2.label }}<br>
+        {{ form.answer_2 }}
+    </p>
+    <p>
+        {{ form.answer_3.label }}<br>
+        {{ form.answer_3 }}
+    </p>
+    <p>
+        {{ form.answer_4.label }}<br>
+        {{ form.answer_4 }}
+    </p>
+    <p>
+        {{ form.answer_5.label }}<br>
+        {{ form.answer_5 }}
+    </p>
+    <p>
+        {{ form.answer_6.label }}<br>
+        {{ form.answer_6 }}
+    </p>
+    <p>
+        {{ form.answer_7.label }}<br>
+        {{ form.answer_7 }}
+    </p>
+    <p>
+        {{ form.answer_8.label}}<br>
+        {{ form.answer_8 }}
+    </p>
+    <p>
+        {{ form.submit() }}
+    </p>
+{% endblock %}

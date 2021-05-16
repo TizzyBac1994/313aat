@@ -1,0 +1,31 @@
+<div class="review-ftb-question">
+  {% set existing_answer = existing_answers[qav.id] %}
+  <fieldset class="fill-the-blanks">
+    <legend>Fill the blanks</legend>
+    {% set word_list = qav.question.question_text.split(' ') %}
+    {% set count = [] %}
+    <p>
+      {% for word in word_list %}
+        {% if word.startswith('[FILL') %}
+          {% if existing_answer.answer_list[count|length].lower() is equalto existing_answer.correct_list[count|length].lower() %}
+            <strong class="correct">{{ existing_answer.answer_list[count|length] }}</strong>
+          {% else %}
+            <strong class="incorrect">{{ existing_answer.answer_list[count|length] }}</strong> <strong class="correction">{{ existing_answer.correct_list[count|length] }}</strong>
+          {% endif %}
+          {% set count = count.append(1) %}
+        {% else %}
+          {{ word }}
+        {% endif %}
+      {% endfor %}
+    </p>
+  </fieldset>
+  {% if existing_answer %}
+    {% set ans_str = ', '.join(existing_answer.value.split(',')) %}
+    <p class="selected-answer">
+      Submitted answer: <strong>{{ ans_str }}</strong>
+    </p>
+  {% endif %}
+  <p class="qav-marks">
+    Marks awarded: {{ qav.calculate_marks_for_answer(existing_answer.raw_answer) }} / {{ qav.marks_value }}
+  </p>
+</div>

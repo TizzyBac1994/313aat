@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block content %}
+<style>
+    #create_question:hover~.describetext{
+        visibility: visible;
+    }
+    .describetext {
+        visibility: hidden;
+        width: fit-content;
+        background-color: lightblue;
+        color: black;
+        text-align: center;
+        border-radius: 6px;
+        border: 0.7px solid black;
+        padding: 0.3em;
+       
+        font-size: 12px;
+        position: absolute;
+    }
+
+    .describetext:hover {
+        visibility: visible;
+    }
+</style>
+
+<button id="create_question">Create Question</button>
+<span class="describetext">
+    <a href="{{ url_for('MCQ') }}">Multiple Choice Question</a>
+    
+    <p>Fill in the Blanks</p>
+</span>
+
+
+<table>
+    {% for question in questions %}
+    <tr>
+        <td>
+            <span>{{ question.question.question_text }}</span>
+        </td>
+            
+        <td>
+            <span>
+            {% if question.question.type == "multiple_choice" %}
+            Multiple Choice Question
+            {% else %}
+            Fill in the Blanks Question
+            {% endif %}
+            </span>
+        </td>
+
+        <td>
+            <a href="/editMCQ/{{ question.question.id }}">Edit</a>>
+        </td>
+
+        <td>
+            <a href="/delete/{{ question.question.id }}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

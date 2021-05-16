@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block title %}{{ assessment.title }}{% endblock %}
+{% block header %}Review Assessment Attempt: {{ assessment.title }}{% endblock %}
+{% block content %}
+  <div class="review-assessment">
+    <div class="interactions">
+      <a href="{{ url_for('student_feedback_for_assessment', assessment_id=assessment.id) }}">Leave feedback for this assessment</a>
+      {% if current_user.type == 'staff' %}
+        <a href="{{ url_for('individual_student_statistics', student_number=attempt.student.student_number) }}">Return to {{ attempt.student.first_name }} {{ attempt.student.larst_name }}'s statistics </a>
+      {% else %}
+        <a href="{{ url_for('statistics') }}">Return to your statistics </a>
+      {% endif %}
+      {% if current_user.type == 'student' %}
+        {% if assessment.type == "formative" %}
+          <form action="{{ url_for('create_assessment_attempt', assessment_id=assessment.id) }}" method="post">
+            <button type="submit" class="button-link">Re-attempt Assessment</button>
+          </form>
+        {% else %}
+          <h3>This is a summative assessment. Please do not close this window until you have submitted. You only have one attempt.</h3>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="results">
+      <h2>Overall Result: {{ attempt.total_marks() }} / {{ assessment.max_marks }} - {{ attempt.percentage(rounded=True) }}%</h2>
+    </div>
+    <div class="content-section">
+    {% set count = [1] %}
+      {% for qav in assessment.questions_and_values %}
+        <div class="assessment-question">
+          <h3>Question {{ count|length }}</h3>
+          {% if qav.question.type == 'multiple_choice' %}
+            {% include "questions/_review-mcq.html" %}          
+          {% elif qav.question.type == 'fill_the_blanks' %}
+            {% include "questions/_review-ftb.html" %}
+          {% endif %}
+        </div>
+        {% set count = count.append(1) %}
+      {% endfor %}
+    </div>
+    <div class="results">
+      <h2>Overall Result: {{ attempt.total_marks() }} / {{ assessment.max_marks }} - {{ attempt.percentage(rounded=True) }}%</h2>
+    </div>
+    <div class="assessment-interactions">
+      <a href="{{ url_for('student_feedback_for_assessment', assessment_id=assessment.id) }}">Leave feedback for this assessment</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Your assessments{% endblock %}
+{% block header %}Your Assessments{% endblock %}
+
+{% block content %}
+
+  {% if current_user.type == 'student' %}
+    <div class="student-assessments">
+      {% for module in current_user.modules_enrolled %}
+        <div class="module-block">
+          <h2 class="module-name"> {{ module.name }} </h2>
+          {% for assessment in module.assessments %}
+            {% include "assessments/_assessments_index_item.html" %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% elif current_user.type == 'staff' %}
+    <div class="staff-assessments">
+      {% for module in current_user.modules_taught %}
+        <div class="module-block">
+          <h2 class="module-name"> {{ module.name }} </h2>
+          {% for assessment in module.assessments %}
+            {% include "assessments/_assessments_index_item.html" %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endblock content %}

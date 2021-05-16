@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Statistics for {{student.student_number}} - {{ student.first_name }} {{ student.last_name }}{% endblock %}
+{% block header %}
+  Statistics for {{student.student_number}} - {{ student.first_name }} {{ student.last_name }}
+{% endblock %}
+{% block content %}
+  <a href="{{ url_for('student_statistics') }}" class="backlink">< Back</a>
+  {% with display_full=True %}
+    {% include "statistics/_student-stats.html" %}
+  {% endwith %}
+{% endblock %}

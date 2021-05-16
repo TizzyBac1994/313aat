@@ -1,0 +1,30 @@
+{% for module in student.modules_enrolled %}
+  <div class="module-block">
+    <h3>{{ module.name }}</h3>
+    <div class="module-percentage">Average percentage: {{ module.student_average_percentage(student.id, rounded=True) }}%</div>
+    {% for assessment in module.assessments %}
+      <div class="assessment-index-item">
+        <h4>{{ assessment.title }}</h4>
+        <ul>
+          {% if assessment.student_attempts(student.id)|length is equalto 0 %}
+            <li><a href="#" class="button-link">Take Assessment</a></li>
+          {% else %}
+            {% if assessment.type == 'summative' %}
+              <li><h4>Grade: {{ assessment.student_best_percentage(student.id) }}%</h4></li>
+            {% else %}
+              <li><h4>Best Grade: {{ assessment.student_best_percentage(student.id) }}%</h4></li>
+              <li>
+                <h4>Attempts:</h4>
+                <ul>
+                  {% for attempt in assessment.student_attempts(student.id) %}
+                    {% include "assessments/_attempts_index_item.html" %}
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}

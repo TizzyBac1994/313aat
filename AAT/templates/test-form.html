@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form action="" method="POST">
+  {{ form.csrf_token() }}
+  {{ form.field.label }}
+  {{ form.field }}
+  {{ form.submit }}
+  {% if form.hidden.errors %}
+    <ul class=errors>
+        {% for error in form.hidden.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+</form>
+{% endblock %}

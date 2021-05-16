@@ -1,0 +1,50 @@
+<article class="assessment-index-item">
+  <div class="heading">
+    <h3>{{ assessment.type[0].upper() + assessment.type[1:] }} #{{ assessment.id }}: {{ assessment.title }}</h2>
+    <div class="action">
+      {% if current_user.type == 'student' %}
+        {% if assessment.student_can_attempt(current_user.id) %}
+        <form action="{{ url_for('create_assessment_attempt', assessment_id=assessment.id) }}" method="post">
+          <button type="submit" class="button-link">Take Assessment</button>
+        </form>
+        {% else %}
+          <button class="button-link disabled" disabled>Already Attempted</button>
+        {% endif %}
+        {% if assessment.type == 'summative' %}
+          <strong>You can only attempt this assessment once! It will be counted towards your final grade.</strong>
+        {% endif %}
+      {% elif current_user.type == 'staff' %}
+        <a href="#" class="button-link">Edit Assessment</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="set-date">Set on: {{ assessment.set_date.strftime("%a, %d %B, %Y") }}</div>
+  {% if assessment.type == 'summative' %}
+    <div class="due-date">Due on: {{ assessment.deadline.strftime("%H:%M - %a, %d %B, %Y") }}</div>
+    <div class="due-date">Will be marked by: {{ assessment.return_date.strftime("%H:%M - %a, %d %B, %Y") }}</div>
+  {% endif %}
+  {% if current_user.type == 'staff' %}
+    <div class="feedback-rating">Average student feedback rating: <strong>{{ assessment.average_feedback_rating(rounded=True) }} / 5</strong></div>
+  {% else %}
+  {% endif %}
+  <div class="staff">Module instructors: 
+  <ul>
+    {% for staff in assessment.module.staff %}
+      <li>{{ staff.first_name }} {{ staff.last_name }}</li>
+    {% endfor %}
+  </ul>
+  {% if current_user.type == 'student' %}
+    {% if assessment.student_attempts(current_user.id)|length > 0 %}
+      <div class="attempts-index">
+        Attempts:
+        <ul>
+          {% for attempt in assessment.student_attempts(current_user.id) %}
+            {% include "assessments/_attempts_index_item.html" %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endif %}
+  <a href="{{ url_for('student_feedback_for_assessment', assessment_id=assessment.id) }}" class="button-link">Leave Feedback</a>
+  </div>
+</article>

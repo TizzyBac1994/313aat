@@ -1,0 +1,38 @@
+<div class="review-mcq-question">
+  {% set existing_answer = existing_answers[qav.id] %}
+  <fieldset class="radio-options">
+    <legend>{{ qav.question.question_text }}</legend>
+    {% for answer in qav.question.options %}
+      <div class="radio-option">
+        <input type="radio"
+          name="qav_{{qav.id}}"
+          disabled
+          value="{{ answer.id }}"
+          id="{{ answer.id }}"
+          {% if existing_answer.raw_answer|int is equalto answer.id %}
+            checked
+          {% endif %}
+        >
+        {% if existing_answer.correct_id|int is equalto answer.id %}
+          {% if existing_answer.raw_answer|int is equalto answer.id %}
+            <label class="correct" for="{{ answer.id }}">{{ answer.value }}</label>
+          {% else %}
+            <label class="correction" for="{{ answer.id }}">{{ answer.value }}</label>
+          {% endif %}
+        {% elif existing_answer.raw_answer|int is equalto answer.id %}
+          <label class="incorrect" for="{{ answer.id }}">{{ answer.value }}</label>
+        {% else %}
+          <label for="{{ answer.id }}">{{ answer.value }}</label>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </fieldset>
+    {% if existing_answer %}
+      <p class="selected-answer">
+        Submitted answer: <strong>{{ existing_answer.value }}</strong>
+      </p>
+    {% endif %}
+    <p class="qav-marks">
+    Marks awarded: {{ qav.calculate_marks_for_answer(existing_answer.raw_answer) }} / {{ qav.marks_value }}
+  </p>
+</div>

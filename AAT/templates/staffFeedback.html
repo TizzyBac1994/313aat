@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}Login{% endblock %}
+{% block header %}Log In{% endblock %}
+{% block content %}
+<form method="POST" actions="">
+    {{ form.csrf_token }}
+    <div>{{ form.student_number.label }} {{ form.student_number }}</div> 
+    <input id="submit" type="submit" value="Search">
+    {{ feedback }}
+</form>
+{% for student in feedback %}
+<div class="list1">
+<ul>
+    <li>
+    The student_id is: {{ student.student_id }}
+</li>
+<li>
+    The assessment_id is: {{ student.assessment_id }}
+</li>
+<li>
+    The content is: {{ student.content }}
+</li>
+</ul>
+</div>
+{% endfor %}
+{% endblock %}

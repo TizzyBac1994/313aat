@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% block title %}{{ assessment.title }}{% endblock %}
+{% block header %}Take Assessment: {{ assessment.title }}{% endblock %}
+{% block content %}
+  <div class="assessment-form">
+    <div class="interactions">
+      <a href="{{ url_for('student_feedback_for_assessment', assessment_id=assessment.id) }}">Leave feedback for this assessment</a>
+      {% if assessment.type == "formative" %}
+        <a href="{{ url_for('assessments') }}">Finish this assessment later</a>
+      {% else %}
+        <h3>This is a summative assessment. Please do not close this window until you have submitted. You only have one attempt.</h3>
+      {% endif %}
+    </div>
+    {% if form.number_of_answers.errors %}
+          {% for error in form.number_of_answers.errors %}
+              <h3 class="unanswered-error">{{ error }}</h3>
+          {% endfor %}
+        {% endif %}
+    <div class="content-section">
+      {% set count = [1] %}
+      {% for qav in assessment.questions_and_values %}
+        <div class="assessment-question">
+          <h3>Question {{ count|length }}</h3>
+          {% if qav.question.type == 'multiple_choice' %}
+            {% include "questions/_answer-mcq.html" %}          
+            {% for existing_answer in existing_answers %}
+              {% if existing_answer == qav.id %}
+                <p class="selected-answer">
+                  Submitted answer: <strong>{{ existing_answers[qav.id] }}</strong>
+                </p>
+              {% endif %}
+            {% endfor %}
+          {% elif qav.question.type == 'fill_the_blanks' %}
+            {% include "questions/_answer-ftb.html" %}
+            {% for existing_answer in existing_answers %}
+              {% if existing_answer == qav.id %}
+              {% set ans_str = ', '.join(existing_answers[qav.id].split(',')) %}
+                <p class="selected-answer">
+                  Submitted answer: <strong>{{ ans_str }}</strong>
+                </p>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% set count = count.append(1) %}
+      {% endfor %}
+      <form action="" method="post" id="assessment-submit-form">
+        {{ form.hidden_tag() }}
+        {{ form.submit_assessment }}
+        {% if form.number_of_answers.errors %}
+          {% for error in form.number_of_answers.errors %}
+              <h3 class="unanswered-error">{{ error }}</h3>
+          {% endfor %}
+        {% endif %}
+      </form>
+    </div>
+    <div class="assessment-interactions">
+      <a href="{{ url_for('student_feedback_for_assessment', assessment_id=assessment.id) }}">Leave feedback for this assessment</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<li class="attempt-index-item">
+  {% if show_name %}
+    <a href="{{ url_for('individual_student_statistics', student_number=attempt.student.student_number) }}">{{attempt.student.student_number}} - {{ attempt.student.first_name }} {{ attempt.student.last_name }}</a>: 
+  {% endif %}
+  {% if attempt.submitted == 0 %}
+    {% if current_user.type == 'student' %}
+      {% if assessment.type == 'formative' %}
+        <strong>(Incomplete)</strong> - <ul><li><a href="{{ url_for('take_assessment_attempt', attempt_id=attempt.id) }}">Continue this attempt</a></li></ul>
+      {% else %}
+        <strong>{{ attempt.percentage(rounded=True) }}% (Did not complete)</strong> - <ul><li><a href="{{ url_for('review_assessment_attempt', attempt_id=attempt.id) }}">See detailed results</a></li></ul>
+      {% endif %}
+    {% else %}
+      {% if assessment.type == 'summative' %}
+        <strong>{{ attempt.percentage(rounded=True) }}% (Did not complete)</strong> - <ul><li><a href="{{ url_for('review_assessment_attempt', attempt_id=attempt.id) }}">See detailed results</a></li></ul>
+      {% endif %}
+    {% endif %}
+  {% else %}
+    <strong>{{ attempt.percentage(rounded=True) }}%</strong>{{ " - " }}<ul><li><a href="{{ url_for('review_assessment_attempt', attempt_id=attempt.id) }}">See detailed results</a></li></ul>
+  {% endif %}
+  <small>({{ attempt.date.strftime("%H:%M - %a, %d %B, %Y") }})</small>
+</li>

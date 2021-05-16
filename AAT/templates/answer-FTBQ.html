@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<h1> Question:</h1>
+<p>{{text}}</p>
+<h2>Category:</h2>
+<p>{{ category }}</p>
+<h2>Hint:</h2>
+<p>{{ hint }}</p>
+<h2>Answers:</h2>
+
+<form action="" method="POST" id="FTBQ-form">
+    {{ form.csrf_token() }}
+    {% for i in range(1,answers_count + 1) %}
+        <p>{{ form['answer_' + i|string].label }}</p>
+        <p>{{ form['answer_' + i|string ] }}</p>
+        
+    {% endfor %}
+
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

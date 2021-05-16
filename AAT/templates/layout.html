@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} | Automated Assessment</title>
+</head>
+<body>
+    <header>
+      {% include "components/_main_nav.html" %}
+      <div id="flash">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul style="color:red">
+                {%for message in messages %}
+                <li id="flash-message">{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {%endwith %}
+      </div>
+    </header>
+    <main>
+      <h1>{% block header %}{% endblock %}</h1>
+      {% block content %}
+      {% endblock %}
+    </main>
+    <iframe name="frame" style="display: none"></iframe>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
